@@ -1,0 +1,112 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 100;
+  transition: background 0.4s $ease, box-shadow 0.4s $ease, padding 0.4s $ease;
+  padding-block: 18px;
+
+  &.solid {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px -22px rgba(33, 48, 74, 0.5);
+    padding-block: 10px;
+  }
+}
+
+.inner {
+  @include container;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: $display;
+  font-weight: 700;
+  font-size: 22px;
+  color: $ink;
+
+  svg {
+    width: 42px;
+    height: 42px;
+  }
+  b {
+    color: var(--flavor-deep);
+  }
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  @include tablet {
+    display: none;
+  }
+
+  a {
+    font-family: $display;
+    font-weight: 500;
+    font-size: 15px;
+    color: $ink;
+    position: relative;
+    transition: color 0.25s $ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      height: 3px;
+      width: 100%;
+      border-radius: 3px;
+      background: $yellow;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s $bounce;
+    }
+    &:hover {
+      color: var(--flavor-deep);
+    }
+    &:hover::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+.cta {
+  @include button(var(--flavor), var(--flavor-ink));
+  font-size: 15px;
+  padding: 12px 22px;
+  @include tablet {
+    display: none;
+  }
+}
+
+.burger {
+  display: none;
+  @include tablet {
+    display: inline-flex;
+  }
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  span {
+    width: 26px;
+    height: 3px;
+    border-radius: 3px;
+    background: $ink;
+  }
+}

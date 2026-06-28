@@ -1,0 +1,33 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.head {
+  &.center {
+    text-align: center;
+    .pill {
+      margin-inline: auto;
+    }
+  }
+  .pill {
+    @include pill($white, var(--flavor-deep));
+    box-shadow: $shadow-sm;
+    margin-bottom: 18px;
+  }
+  h2 {
+    @include h-display;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    color: $ink;
+    em {
+      font-style: normal;
+    }
+  }
+  p {
+    margin-top: 14px;
+    color: $gray;
+    font-weight: 600;
+    max-width: 52ch;
+    &.center {
+      margin-inline: auto;
+    }
+  }
+}

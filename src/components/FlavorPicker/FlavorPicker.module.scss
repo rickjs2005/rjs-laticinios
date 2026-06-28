@@ -1,0 +1,88 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.wrap {
+  position: relative;
+}
+
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: $display;
+  font-weight: 600;
+  font-size: 15px;
+  color: $ink;
+  background: #fff;
+  padding: 9px 16px;
+  border-radius: 999px;
+  box-shadow: $shadow-sm;
+  transition: transform 0.3s $bounce;
+  &:hover {
+    transform: translateY(-2px);
+  }
+  .dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 999px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1.5px rgba(33, 48, 74, 0.12);
+  }
+  .chev {
+    font-size: 11px;
+    color: $gray;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 250px;
+  background: #fff;
+  border-radius: 22px;
+  padding: 12px;
+  box-shadow: 0 30px 60px -28px rgba(33, 48, 74, 0.5);
+  z-index: 60;
+}
+.title {
+  font-family: $display;
+  font-weight: 700;
+  font-size: 13px;
+  color: $gray;
+  padding: 4px 10px 10px;
+}
+.opt {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border-radius: 14px;
+  font-family: $body;
+  font-weight: 700;
+  font-size: 15px;
+  color: $ink;
+  transition: background 0.2s ease;
+  &:hover {
+    background: $cream;
+  }
+  &.active {
+    background: var(--flavor-soft);
+  }
+  .swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.8), 0 0 0 1.5px rgba(33, 48, 74, 0.12);
+  }
+  .emoji {
+    margin-left: auto;
+    font-size: 18px;
+  }
+  .check {
+    color: var(--flavor-deep);
+    font-weight: 800;
+  }
+}

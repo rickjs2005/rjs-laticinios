@@ -1,0 +1,143 @@
+@use "../styles/tokens" as *;
+@use "../styles/mixins" as *;
+
+// ── Sabores (tema): a cor de destaque muda conforme o sabor escolhido ──
+//   --flavor      cor viva (fundos/botões/ícones)
+//   --flavor-ink  texto sobre --flavor (claro ou escuro p/ contraste)
+//   --flavor-deep variação escura legível (texto-acento em fundo claro)
+//   --flavor-soft tom claro (chips, seções suaves)
+:root {
+  --flavor: #2e7df6; // Leite (padrão)
+  --flavor-ink: #ffffff;
+  --flavor-deep: #1457c8;
+  --flavor-soft: #e8f1ff;
+  --flavor-trans: color 0.45s ease, background 0.45s ease, border-color 0.45s ease,
+    box-shadow 0.45s ease;
+}
+[data-flavor="flocos"] {
+  --flavor: #7a5234;
+  --flavor-ink: #fff;
+  --flavor-deep: #5c3c24;
+  --flavor-soft: #f0e7df;
+}
+[data-flavor="morango"] {
+  --flavor: #ff5d8f;
+  --flavor-ink: #fff;
+  --flavor-deep: #d83b6e;
+  --flavor-soft: #ffe3ec;
+}
+[data-flavor="uva"] {
+  --flavor: #8b5cf6;
+  --flavor-ink: #fff;
+  --flavor-deep: #6d34e0;
+  --flavor-soft: #efe7ff;
+}
+[data-flavor="banana"] {
+  --flavor: #ffc220;
+  --flavor-ink: #3a2e0a;
+  --flavor-deep: #a9760a;
+  --flavor-soft: #fff3cc;
+}
+[data-flavor="coco"] {
+  --flavor: #b98e5e;
+  --flavor-ink: #fff;
+  --flavor-deep: #8a6a44;
+  --flavor-soft: #f5ece0;
+}
+[data-flavor="salada"] {
+  --flavor: #ff8a3d;
+  --flavor-ink: #fff;
+  --flavor-deep: #e06a1e;
+  --flavor-soft: #ffe9d6;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; // Lenis cuida
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  background: $cream;
+  color: $ink;
+  font-family: $body;
+  font-size: 17px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  font: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: inherit;
+}
+img {
+  display: block;
+  max-width: 100%;
+}
+ul {
+  list-style: none;
+}
+
+::selection {
+  background: $yellow;
+  color: $ink;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: $cream;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--flavor);
+  border-radius: 999px;
+}
+
+// Lenis
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+// seção genérica
+.section {
+  position: relative;
+  padding-block: 110px;
+  @include mobile {
+    padding-block: 72px;
+  }
+}
+
+:focus-visible {
+  outline: 3px solid var(--flavor);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

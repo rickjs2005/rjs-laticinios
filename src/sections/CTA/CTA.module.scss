@@ -1,0 +1,85 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  @include container;
+}
+.box {
+  position: relative;
+  overflow: hidden;
+  border-radius: 40px;
+  background: linear-gradient(120deg, $orange 0%, $yellow 100%);
+  padding: 64px 56px;
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  align-items: center;
+  gap: 30px;
+  box-shadow: $shadow;
+  @include tablet {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 48px 26px;
+  }
+}
+.copy {
+  position: relative;
+  z-index: 2;
+  h2 {
+    @include h-display;
+    font-size: clamp(2.2rem, 5.4vw, 4rem);
+    color: #fff;
+    text-shadow: 0 4px 0 rgba(33, 48, 74, 0.12);
+  }
+  p {
+    margin-top: 16px;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 700;
+    font-size: 1.15rem;
+    max-width: 40ch;
+    @include tablet {
+      margin-inline: auto;
+    }
+  }
+  .btn {
+    margin-top: 28px;
+    @include button(#fff, $orange);
+    font-size: 17px;
+  }
+}
+.panda {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+}
+.pandaImg {
+  width: min(380px, 86%);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 28px 34px rgba(33, 48, 74, 0.3));
+  &[data-ph] {
+    aspect-ratio: 3 / 4;
+    width: min(320px, 80%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border-radius: 36px;
+    border: 3px dashed rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-family: $display;
+    font-weight: 700;
+    text-align: center;
+    span {
+      font-size: 3em;
+      line-height: 1;
+    }
+    small {
+      font-size: 12px;
+      opacity: 0.9;
+      padding: 0 10px;
+    }
+  }
+}

@@ -1,0 +1,245 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  @include container;
+}
+
+.filters {
+  margin: 38px 0 50px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.chip {
+  font-family: $display;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 11px 22px;
+  border-radius: 999px;
+  background: #fff;
+  color: $ink;
+  box-shadow: $shadow-sm;
+  transition: transform 0.3s $bounce, background 0.3s $ease, color 0.3s $ease;
+  &:hover {
+    transform: translateY(-2px);
+  }
+  &.active {
+    background: var(--flavor);
+    color: var(--flavor-ink);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  position: relative;
+  background: linear-gradient(180deg, #fff 0%, #fbf7ee 100%);
+  border-radius: $radius;
+  padding: 18px 18px 26px;
+  box-shadow: $shadow-sm;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  transition: transform 0.45s $bounce, box-shadow 0.45s $ease;
+  cursor: pointer;
+  &:hover {
+    transform: translateY(-14px);
+    box-shadow: 0 44px 70px -30px rgba(33, 48, 74, 0.5);
+  }
+}
+
+/* palco do render gigante */
+.stage {
+  position: relative;
+  height: 260px;
+  border-radius: 22px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(80% 60% at 50% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%),
+    var(--card-soft, #f3f7ff);
+  @include mobile {
+    height: 230px;
+  }
+}
+
+.glow {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  filter: blur(36px);
+  opacity: 0.55;
+  background: var(--card-accent, var(--flavor));
+  transition: opacity 0.5s $ease, transform 0.5s $ease;
+}
+.card:hover .glow {
+  opacity: 0.85;
+  transform: scale(1.12);
+}
+
+.splash {
+  position: absolute;
+  width: 130%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -46%);
+  opacity: 0.9;
+  pointer-events: none;
+  &[data-ph] {
+    display: none;
+  }
+}
+
+.floatY {
+  position: relative;
+  z-index: 2;
+  width: 72%;
+  animation: prodFloat 5s ease-in-out infinite;
+}
+.render {
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 26px 26px rgba(33, 48, 74, 0.32));
+  &[data-ph] {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 24px;
+    border: 2px dashed rgba(33, 48, 74, 0.18);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(4px);
+    color: var(--flavor-deep);
+    font-family: $display;
+    font-weight: 700;
+    span {
+      font-size: 3.2em;
+      line-height: 1;
+      filter: drop-shadow(0 8px 12px rgba(33, 48, 74, 0.22));
+    }
+    small {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+  }
+}
+
+.shadow {
+  position: absolute;
+  bottom: 26px;
+  width: 52%;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(33, 48, 74, 0.22);
+  filter: blur(9px);
+  z-index: 1;
+  transition: transform 0.45s $ease;
+}
+.card:hover .shadow {
+  transform: scale(0.86);
+}
+
+.cat {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  @include pill(rgba(255, 255, 255, 0.92), $ink);
+  backdrop-filter: blur(4px);
+  box-shadow: $shadow-sm;
+}
+
+.body {
+  padding: 22px 8px 0;
+  h3 {
+    @include h-display;
+    font-size: 1.5rem;
+  }
+  p {
+    margin-top: 8px;
+    color: $gray;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .foot {
+    margin-top: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .weight {
+    font-family: $display;
+    font-weight: 700;
+    color: $ink;
+  }
+  .add {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 24px;
+    box-shadow: $shadow-sm;
+    transition: transform 0.3s $bounce;
+    background: var(--card-accent, var(--flavor));
+  }
+  &:hover .add {
+    transform: rotate(90deg) scale(1.08);
+  }
+}
+
+/* acentos por cor de produto (mantém a variedade colorida da marca) */
+.blue {
+  --card-accent: var(--flavor);
+  --card-soft: var(--flavor-soft);
+  .add {
+    color: var(--flavor-ink);
+  }
+}
+.yellow {
+  --card-accent: #{$yellow};
+  --card-soft: #{$yellow-soft};
+  .add {
+    color: $ink;
+  }
+}
+.green {
+  --card-accent: #{$green};
+  --card-soft: #{$green-soft};
+}
+.orange {
+  --card-accent: #{$orange};
+  --card-soft: #{$orange-soft};
+}
+
+@keyframes prodFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+  50% {
+    transform: translateY(-16px) rotate(1.5deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .floatY {
+    animation: none;
+  }
+}

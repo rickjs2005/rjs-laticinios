@@ -1,0 +1,39 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  background: linear-gradient(120deg, var(--flavor) 0%, var(--flavor-deep) 100%);
+  color: var(--flavor-ink);
+  padding-block: 84px;
+}
+.inner {
+  @include container;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px 20px;
+  }
+}
+.cell {
+  text-align: center;
+  .value {
+    @include h-display;
+    font-size: clamp(2.6rem, 6vw, 4.2rem);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    em {
+      font-style: normal;
+      color: var(--flavor-ink);
+      opacity: 0.72;
+    }
+  }
+  .label {
+    margin-top: 12px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--flavor-ink);
+    opacity: 0.85;
+  }
+}
