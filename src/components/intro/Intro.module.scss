@@ -1,0 +1,125 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1457c8 0%, #2e7df6 52%, #7cc0ff 100%);
+  will-change: transform;
+}
+
+/* leite que sobe preenchendo a tela */
+.fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16%;
+  background: #fffdf8;
+  will-change: height;
+}
+
+/* crista ondulada na superfície do leite (acompanha a subida) */
+.crest {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  width: 100%;
+  height: clamp(28px, 4vw, 56px);
+  display: block;
+}
+
+.bubble {
+  position: absolute;
+  top: 18px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: inset 0 0 0 2px rgba(33, 48, 74, 0.06);
+  animation: rise 2.4s ease-in-out infinite;
+}
+@keyframes rise {
+  0% {
+    transform: translateY(8px) scale(0.7);
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateY(-26px) scale(1);
+    opacity: 0;
+  }
+}
+
+/* lockup central (logo + assinatura) */
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 24px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.92);
+  will-change: transform, opacity;
+}
+
+.logo {
+  width: clamp(72px, 12vw, 104px);
+  height: auto;
+  filter: drop-shadow(0 14px 24px rgba(20, 38, 70, 0.22));
+}
+
+.word {
+  margin-top: 14px;
+  font-family: $display;
+  font-weight: 700;
+  font-size: clamp(2.1rem, 6vw, 3.4rem);
+  color: $ink;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  span {
+    @include accent-serif;
+    color: $brand;
+  }
+}
+
+.tag {
+  margin-top: 10px;
+  font-family: $display;
+  font-weight: 600;
+  font-size: clamp(0.95rem, 2.6vw, 1.15rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: $gray;
+}
+
+.skip {
+  position: absolute;
+  bottom: 22px;
+  right: 22px;
+  z-index: 3;
+  font-family: $display;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  color: $ink;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: $shadow-sm;
+  backdrop-filter: blur(4px);
+  transition: transform 0.3s $bounce, background 0.3s $ease;
+  &:hover {
+    transform: translateY(-2px);
+    background: #fff;
+  }
+  &:focus-visible {
+    outline: 3px solid #fff;
+    outline-offset: 3px;
+  }
+}

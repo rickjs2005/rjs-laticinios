@@ -59,6 +59,11 @@
   padding: 0;
 }
 
+// anti-flash: quem já viu a intro (sessão) ou usa reduced-motion não a vê
+html[data-intro-skip] #rjs-intro {
+  display: none !important;
+}
+
 html {
   scroll-behavior: auto; // Lenis cuida
   -webkit-font-smoothing: antialiased;

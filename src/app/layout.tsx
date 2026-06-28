@@ -6,6 +6,7 @@ import { ClickFX } from "@/components/anim/ClickFX";
 import { LiquidCursor } from "@/components/anim/LiquidCursor";
 import { StickyWhats } from "@/components/ui/StickyWhats";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { Intro } from "@/components/intro/Intro";
 
 const display = Fredoka({
   subsets: ["latin"],
@@ -95,13 +96,14 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html:
-              "try{var f=localStorage.getItem('rjs-flavor');if(f&&f!=='leite')document.documentElement.setAttribute('data-flavor',f);}catch(e){}",
+              "try{var f=localStorage.getItem('rjs-flavor');if(f&&f!=='leite')document.documentElement.setAttribute('data-flavor',f);var s=sessionStorage.getItem('rjs-intro-seen');var rm=matchMedia('(prefers-reduced-motion: reduce)').matches;if(s||rm)document.documentElement.setAttribute('data-intro-skip','1');}catch(e){}",
           }}
         />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
         />
+        <Intro />
         <SmoothScroll>{children}</SmoothScroll>
         <ClickFX />
         <LiquidCursor />
