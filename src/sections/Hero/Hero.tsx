@@ -65,7 +65,7 @@ function FloatItem({
   return (
     <motion.div
       className={`${styles.float} ${def.back ? styles.floatBack : ""}`}
-      style={{ ...def.pos, width: def.size, x, y }}
+      style={{ ...def.pos, x, y, "--fsize": `${def.size}px` } as unknown as CSSProperties}
     >
       <motion.div
         className={styles.floatInner}

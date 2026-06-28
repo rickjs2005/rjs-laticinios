@@ -205,6 +205,10 @@
   width: min(640px, 96%);
   z-index: 3;
   will-change: transform;
+  // no mobile o panda recua um pouco p/ os floats não cobrirem o rosto
+  @include mobile {
+    width: min(330px, 72%);
+  }
 }
 .pandaImg {
   width: 100%;
@@ -234,13 +238,20 @@
 .float {
   position: absolute;
   z-index: 4;
+  width: var(--fsize); // tamanho vem inline como CSS var (p/ poder reduzir no mobile)
   will-change: transform;
+  @include mobile {
+    width: calc(var(--fsize) * 0.56); // floats menores p/ dar respiro ao panda
+  }
 }
 /* floats de fundo — recuam: parallax menor, leve desfoque e opacidade */
 .floatBack {
   z-index: 2;
   opacity: 0.8;
   filter: blur(1.4px);
+  @include mobile {
+    display: none; // no mobile some os de fundo (queijo/manteiga) p/ reduzir poluição
+  }
 }
 .floatInner {
   position: relative;
