@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
 import { STATS, type Stat } from "@/constants/data";
+import { MilkDivider } from "@/components/decor/MilkDivider";
 import styles from "./Stats.module.scss";
 
 function Counter({ stat }: { stat: Stat }) {
@@ -40,6 +41,7 @@ function Counter({ stat }: { stat: Stat }) {
 export function Stats() {
   return (
     <section className={styles.section}>
+      <MilkDivider />
       <div className={styles.inner}>
         {STATS.map((s) => (
           <div key={s.label} className={styles.cell}>

@@ -5,6 +5,7 @@ import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { ClickFX } from "@/components/anim/ClickFX";
 import { LiquidCursor } from "@/components/anim/LiquidCursor";
 import { StickyWhats } from "@/components/ui/StickyWhats";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
 const display = Fredoka({
   subsets: ["latin"],
@@ -105,6 +106,7 @@ export default function RootLayout({
         <ClickFX />
         <LiquidCursor />
         <StickyWhats />
+        <ScrollProgress />
       </body>
     </html>
   );

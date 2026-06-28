@@ -2,12 +2,13 @@
 @use "../../styles/mixins" as *;
 
 .footer {
+  position: relative;
   background: $ink;
   color: #fff;
 }
 .top {
   @include container;
-  padding-block: 70px 50px;
+  padding-block: 104px 50px; // espaço p/ a transição de leite no topo
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
   gap: 40px;

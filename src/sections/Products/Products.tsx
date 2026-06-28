@@ -24,6 +24,16 @@ const EMOJI: Record<string, string> = {
   "doce-de-leite": "🍮",
 };
 
+// dimensões intrínsecas dos PNGs → next/image (WebP/srcset) + proporção correta
+const DIMS: Record<string, { w: number; h: number }> = {
+  "leite-integral": { w: 158, h: 439 },
+  "queijo-minas": { w: 200, h: 141 },
+  "manteiga-extra": { w: 208, h: 178 },
+  "iogurte-natural": { w: 169, h: 196 },
+  "requeijao-cremoso": { w: 143, h: 204 },
+  "doce-de-leite": { w: 152, h: 207 },
+};
+
 /* ── Card com tilt 3D premium (segue o cursor) ─────────────────────── */
 function ProductCard({
   p,
@@ -89,7 +99,6 @@ function ProductCard({
             className={styles.splash}
             variant="free"
             emoji=""
-            aspectRatio="1 / 1"
           />
           <span className={styles.glow} aria-hidden />
           {/* render gigante flutuando */}
@@ -101,7 +110,8 @@ function ProductCard({
               variant="chip"
               emoji={EMOJI[p.id] ?? "🧺"}
               label="render"
-              aspectRatio="1 / 1"
+              width={DIMS[p.id]?.w}
+              height={DIMS[p.id]?.h}
             />
           </div>
           <span className={styles.shadow} aria-hidden />
@@ -199,7 +209,8 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
             variant="chip"
             emoji={EMOJI[product.id] ?? "🧺"}
             label="render"
-            aspectRatio="1 / 1"
+            width={DIMS[product.id]?.w}
+            height={DIMS[product.id]?.h}
           />
         </div>
 

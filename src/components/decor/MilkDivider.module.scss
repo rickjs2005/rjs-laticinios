@@ -1,0 +1,47 @@
+.wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(64px, 7vw, 96px);
+  z-index: 2;
+  pointer-events: none;
+  line-height: 0;
+  filter: drop-shadow(0 6px 10px rgba(33, 48, 74, 0.18));
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.drop {
+  animation: milkDrip 5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.drop:nth-of-type(2) {
+  animation-delay: 1.2s;
+}
+.drop:nth-of-type(3) {
+  animation-delay: 2.4s;
+}
+
+@keyframes milkDrip {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(4px);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drop {
+    animation: none;
+  }
+}

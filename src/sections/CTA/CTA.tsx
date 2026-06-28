@@ -85,6 +85,8 @@ export function CTA() {
               variant="free"
               emoji="🐼"
               label="render do panda com placa (panda-sign.png)"
+              width={432}
+              height={578}
             />
           </motion.div>
         </motion.div>

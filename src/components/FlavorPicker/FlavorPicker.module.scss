@@ -5,6 +5,20 @@
   position: relative;
 }
 
+/* onda de tinta que varre a tela ao trocar de sabor */
+.wipe {
+  position: fixed;
+  width: 240vmax;
+  height: 240vmax;
+  margin-left: -120vmax;
+  margin-top: -120vmax;
+  border-radius: 50%;
+  z-index: 9997;
+  pointer-events: none;
+  transform-origin: center;
+  will-change: transform, opacity;
+}
+
 .trigger {
   display: inline-flex;
   align-items: center;

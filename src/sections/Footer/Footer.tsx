@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FaWhatsapp, FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa6";
 import { BRAND, NAV, CATEGORIES } from "@/constants/data";
+import { MilkDivider } from "@/components/decor/MilkDivider";
 import styles from "./Footer.module.scss";
 
 function LogoMark() {
@@ -26,6 +27,7 @@ export function Footer() {
 
   return (
     <footer id="contato" className={styles.footer}>
+      <MilkDivider />
       <div className={styles.top}>
         <div className={styles.brand}>
           <div className={styles.logo}>

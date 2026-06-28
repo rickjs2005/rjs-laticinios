@@ -1,25 +1,30 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import styles from "./FlavorPicker.module.scss";
 
-type Flavor = { id: string; name: string; emoji: string; dot: string };
+type Flavor = { id: string; name: string; emoji: string; dot: string; wipe: string };
 
+// `wipe` = cor sólida da onda de tinta ao trocar de sabor (= valor de --flavor)
 const FLAVORS: Flavor[] = [
-  { id: "leite", name: "Leite", emoji: "🥛", dot: "#2e7df6" },
-  { id: "flocos", name: "Flocos", emoji: "🍫", dot: "linear-gradient(135deg,#fff 50%,#7a5234 50%)" },
-  { id: "morango", name: "Morango", emoji: "🍓", dot: "#ff5d8f" },
-  { id: "uva", name: "Uva", emoji: "🍇", dot: "#8b5cf6" },
-  { id: "banana", name: "Banana", emoji: "🍌", dot: "#ffc220" },
-  { id: "coco", name: "Coco", emoji: "🥥", dot: "linear-gradient(135deg,#fff 50%,#b98e5e 50%)" },
-  { id: "salada", name: "Salada de frutas", emoji: "🥗", dot: "linear-gradient(120deg,#ff8a3d,#ffc220,#ff5d8f)" },
+  { id: "leite", name: "Leite", emoji: "🥛", dot: "#2e7df6", wipe: "#2e7df6" },
+  { id: "flocos", name: "Flocos", emoji: "🍫", dot: "linear-gradient(135deg,#fff 50%,#7a5234 50%)", wipe: "#7a5234" },
+  { id: "morango", name: "Morango", emoji: "🍓", dot: "#ff5d8f", wipe: "#ff5d8f" },
+  { id: "uva", name: "Uva", emoji: "🍇", dot: "#8b5cf6", wipe: "#8b5cf6" },
+  { id: "banana", name: "Banana", emoji: "🍌", dot: "#ffc220", wipe: "#ffc220" },
+  { id: "coco", name: "Coco", emoji: "🥥", dot: "linear-gradient(135deg,#fff 50%,#b98e5e 50%)", wipe: "#b98e5e" },
+  { id: "salada", name: "Salada de frutas", emoji: "🥗", dot: "linear-gradient(120deg,#ff8a3d,#ffc220,#ff5d8f)", wipe: "#ff8a3d" },
 ];
+
+type Wipe = { x: number; y: number; color: string; id: number };
 
 export function FlavorPicker() {
   const [open, setOpen] = useState(false);
   const [flavor, setFlavor] = useState("leite");
+  const [wipe, setWipe] = useState<Wipe | null>(null);
   const ref = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
 
   useEffect(() => {
     setFlavor(document.documentElement.getAttribute("data-flavor") || "leite");
@@ -39,6 +44,18 @@ export function FlavorPicker() {
   }, []);
 
   const pick = (id: string) => {
+    if (id === flavor) {
+      setOpen(false);
+      return;
+    }
+    // onda de tinta a partir do botão (delight ao trocar o tema)
+    if (!reduce) {
+      const f = FLAVORS.find((x) => x.id === id);
+      const r = ref.current?.getBoundingClientRect();
+      if (f && r) {
+        setWipe({ x: r.left + r.width / 2, y: r.top + r.height / 2, color: f.wipe, id: Date.now() });
+      }
+    }
     setFlavor(id);
     if (id === "leite") document.documentElement.removeAttribute("data-flavor");
     else document.documentElement.setAttribute("data-flavor", id);
@@ -93,6 +110,22 @@ export function FlavorPicker() {
               </button>
             ))}
           </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* onda de tinta full-screen ao trocar de sabor */}
+      <AnimatePresence>
+        {wipe && (
+          <motion.span
+            key={wipe.id}
+            aria-hidden
+            className={styles.wipe}
+            style={{ left: wipe.x, top: wipe.y, background: wipe.color }}
+            initial={{ scale: 0, opacity: 0.92 }}
+            animate={{ scale: 1, opacity: [0.92, 0.92, 0] }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1], times: [0, 0.5, 1] }}
+            onAnimationComplete={() => setWipe(null)}
+          />
         )}
       </AnimatePresence>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import Image from "next/image";
 
 type Variant = "photo" | "chip" | "free";
 
@@ -65,6 +66,27 @@ export function AssetImage({
     );
   }
 
+  // Imagem local + dimensões conhecidas → next/image (WebP/AVIF, srcset, lazy).
+  // O className controla o tamanho exibido (width:100%/height:auto nos módulos).
+  const isLocal = src.startsWith("/");
+  if (isLocal && width && height) {
+    return (
+      <Image
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        className={className}
+        style={boxStyle}
+        priority={eager}
+        loading={eager ? undefined : "lazy"}
+        draggable={false}
+        onError={() => setFailed(true)}
+      />
+    );
+  }
+
+  // Demais casos (sem dimensão / remoto / decorativo) → <img> simples.
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img

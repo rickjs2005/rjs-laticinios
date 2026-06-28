@@ -26,15 +26,17 @@ type FloatDef = {
   delay: number;
   splash?: string;
   back?: boolean; // float de fundo (mais suave, parallax menor)
+  w: number; // dimensão intrínseca (next/image + anti-CLS)
+  h: number;
 };
 
 // Só assets que existem de verdade em /public/hero/ (sem placeholders quebrados).
 // "back" = profundidade: opacidade menor + blur leve + parallax reduzido.
 const FLOATS: FloatDef[] = [
-  { src: "/hero/milk.png", alt: "Copo de leite", emoji: "🥛", label: "leite", pos: { top: "4%", left: "1%" }, size: 150, depth: 42, delay: 0, splash: "/hero/splash-milk.png" },
-  { src: "/hero/yogurt.png", alt: "Iogurte", emoji: "🍦", label: "iogurte", pos: { top: "8%", right: "1%" }, size: 138, depth: 34, delay: 0.5, splash: "/hero/splash-yogurt.png" },
-  { src: "/hero/cheese.png", alt: "Queijo", emoji: "🧀", label: "queijo", pos: { bottom: "10%", left: "-2%" }, size: 120, depth: 20, delay: 0.9, back: true },
-  { src: "/hero/butter.png", alt: "Manteiga", emoji: "🧈", label: "manteiga", pos: { bottom: "5%", right: "-1%" }, size: 112, depth: 18, delay: 0.3, back: true },
+  { src: "/hero/milk.png", alt: "Copo de leite", emoji: "🥛", label: "leite", pos: { top: "4%", left: "1%" }, size: 150, depth: 42, delay: 0, splash: "/hero/splash-milk.png", w: 158, h: 439 },
+  { src: "/hero/yogurt.png", alt: "Iogurte", emoji: "🍦", label: "iogurte", pos: { top: "8%", right: "1%" }, size: 138, depth: 34, delay: 0.5, splash: "/hero/splash-yogurt.png", w: 169, h: 196 },
+  { src: "/hero/cheese.png", alt: "Queijo", emoji: "🧀", label: "queijo", pos: { bottom: "10%", left: "-2%" }, size: 120, depth: 20, delay: 0.9, back: true, w: 200, h: 141 },
+  { src: "/hero/butter.png", alt: "Manteiga", emoji: "🧈", label: "manteiga", pos: { bottom: "5%", right: "-1%" }, size: 112, depth: 18, delay: 0.3, back: true, w: 208, h: 178 },
 ];
 
 // posições fixas das partículas (determinístico — sem hydration mismatch).
@@ -79,6 +81,8 @@ function FloatItem({
           variant="chip"
           emoji={def.emoji}
           label={def.label}
+          width={def.w}
+          height={def.h}
           eager
         />
       </motion.div>
@@ -230,6 +234,8 @@ export function Hero() {
                   variant="free"
                   emoji="🐼"
                   label="render do panda 3D (panda.png)"
+                  width={432}
+                  height={578}
                   eager
                 />
               </motion.div>
