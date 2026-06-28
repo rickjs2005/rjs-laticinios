@@ -3,8 +3,15 @@
 
 .footer {
   position: relative;
-  background: $ink;
+  // fundo escuro TINTADO pelo sabor (segue --flavor-deep; permanece escuro p/ contraste)
+  background: radial-gradient(
+    130% 100% at 15% 0%,
+    color-mix(in srgb, var(--flavor-deep) 34%, #131d33) 0%,
+    #101a30 72%
+  );
   color: #fff;
+  // acento legível sobre o escuro = sabor clareado (vale p/ qualquer sabor)
+  --foot-accent: color-mix(in srgb, var(--flavor) 68%, #ffffff);
 }
 .top {
   @include container;
@@ -32,7 +39,7 @@
       height: 42px;
     }
     b {
-      color: $yellow;
+      color: var(--foot-accent);
     }
   }
   p {
@@ -65,7 +72,7 @@
   h4 {
     font-family: $display;
     font-weight: 700;
-    color: $yellow;
+    color: var(--foot-accent);
     margin-bottom: 16px;
   }
   a,
@@ -103,7 +110,7 @@
     }
   }
   button {
-    @include button($yellow, $ink);
+    @include button(var(--flavor), var(--flavor-ink));
     padding: 10px 18px;
     font-size: 14px;
     box-shadow: none;
@@ -143,7 +150,7 @@
   a:focus-visible,
   button:focus-visible,
   input:focus-visible {
-    outline: 3px solid $yellow;
+    outline: 3px solid var(--foot-accent);
     outline-offset: 3px;
     border-radius: 8px;
   }
