@@ -98,8 +98,7 @@ export function AssetImage({
       width={width}
       height={height}
       loading={eager ? "eager" : "lazy"}
-      // @ts-expect-error — fetchPriority é válido no DOM, tipos do React podem não cobrir
-      fetchpriority={eager ? "high" : undefined}
+      fetchPriority={eager ? "high" : undefined}
       decoding="async"
       draggable={false}
       onError={() => setFailed(true)}

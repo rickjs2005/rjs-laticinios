@@ -91,7 +91,11 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="pt-BR" className={`${display.variable} ${body.variable} ${serif.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${display.variable} ${body.variable} ${serif.variable}`}
+      suppressHydrationWarning
+    >
       <body>
         <script
           dangerouslySetInnerHTML={{

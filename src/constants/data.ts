@@ -147,7 +147,7 @@ export const RECIPES: Recipe[] = [
       "Modele bolinhas, disponha na assadeira e leve ao forno a 180 °C por ~25 min, até dourar.",
       "Sirva quentinho — de preferência com um café passado na hora.",
     ],
-    image: U("1576186726115-4d51596775d1"),
+    image: U("1509440159596-0249088772ff"),
   },
   {
     name: "Bolo de Iogurte Fofinho",
@@ -162,7 +162,7 @@ export const RECIPES: Recipe[] = [
       "Faça o teste do palito; espere amornar antes de desenformar.",
       "Finalize com uma calda de iogurte e mel, se quiser.",
     ],
-    image: U("1563636619-e9143da7973b"),
+    image: U("1535141192574-5d4897c12636"),
   },
   {
     name: "Brigadeiro de Doce de Leite",
@@ -177,7 +177,7 @@ export const RECIPES: Recipe[] = [
       "Enrole as bolinhas com as mãos untadas e passe no granulado.",
       "Guarde em forminhas — se sobrar (dificilmente sobra).",
     ],
-    image: U("1628689469838-524a4a973b8e"),
+    image: U("1606313564200-e75d5e30476c"),
   },
 ];
 
