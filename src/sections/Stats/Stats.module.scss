@@ -4,11 +4,18 @@
 .section {
   position: relative;
   isolation: isolate;
+  // faixa escura TINTADA pelo sabor (glows + base seguem --flavor; fica escura p/ contraste)
   background:
-    radial-gradient(120% 140% at 18% 0%, rgba($blue, 0.42) 0%, transparent 55%),
-    radial-gradient(120% 140% at 88% 100%, rgba($blue-deep, 0.5) 0%, transparent 52%),
-    linear-gradient(135deg, #16223b 0%, $ink 48%, #182a4d 100%);
+    radial-gradient(120% 140% at 18% 0%, color-mix(in srgb, var(--flavor) 40%, transparent) 0%, transparent 55%),
+    radial-gradient(120% 140% at 88% 100%, color-mix(in srgb, var(--flavor-deep) 55%, transparent) 0%, transparent 52%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--flavor-deep) 24%, #142038) 0%,
+      color-mix(in srgb, var(--flavor-deep) 16%, #182a4d) 100%
+    );
   color: #fff;
+  // acento legível sobre o escuro = sabor clareado
+  --stat-accent: color-mix(in srgb, var(--flavor) 70%, #ffffff);
   padding-block: 112px 92px; // espaço extra no topo p/ a transição de leite
   overflow: hidden;
 
@@ -66,7 +73,7 @@
     text-shadow: 0 6px 26px rgba(0, 0, 0, 0.35);
     em {
       font-style: normal;
-      color: $yellow; // acento quente, contraste AA sobre o navy
+      color: var(--stat-accent); // segue o sabor (clareado p/ manter contraste)
       margin-left: 2px;
     }
   }
