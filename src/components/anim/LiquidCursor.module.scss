@@ -1,44 +1,55 @@
 .layer {
   position: fixed;
   inset: 0;
-  z-index: 9998;
+  z-index: 10000; // acima de tudo (inclusive da intro)
   pointer-events: none;
 }
 
-.defs {
+/* gota de leite (cursor) — ponta alinhada ao ponto do ponteiro */
+.drop {
   position: absolute;
+  top: 0;
+  left: 0;
+  width: 22px;
+  margin-left: -11px; // centraliza a ponta (x=12 do viewBox) no ponto
+  margin-top: -1px; // ponta (y≈1.5) no ponto
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: transform;
 }
 
-.goo {
-  position: absolute;
-  inset: 0;
-  filter: url(#milk-goo);
+.dropSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+  transform-origin: 50% 8%; // escala a partir da ponta
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+  filter: drop-shadow(0 4px 6px rgba(20, 38, 70, 0.28));
 }
 
-.dot,
+/* sobre elementos clicáveis a gota incha; ao clicar ela "espreme" */
+.drop[data-hot="1"] .dropSvg {
+  transform: scale(1.32);
+}
+.drop[data-press="1"] .dropSvg {
+  transform: scale(0.82);
+}
+
+/* rastro cremoso que segue mais devagar */
 .trail {
   position: absolute;
   top: 0;
   left: 0;
+  width: 26px;
+  height: 26px;
+  margin-left: -13px;
+  margin-top: -13px;
   border-radius: 50%;
-  background: #ffffff;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0) 70%);
   opacity: 0;
+  filter: blur(2px);
+  transition: opacity 0.3s ease;
   will-change: transform;
-  transition: opacity 0.3s ease, width 0.25s ease, height 0.25s ease;
-}
-
-.dot {
-  width: 14px;
-  height: 14px;
-}
-
-.trail {
-  width: 30px;
-  height: 30px;
-  &[data-hot="1"] {
-    width: 52px;
-    height: 52px;
-  }
 }
 
 @media (pointer: coarse), (prefers-reduced-motion: reduce) {

@@ -64,6 +64,12 @@ html[data-intro-skip] #rjs-intro {
   display: none !important;
 }
 
+// cursor de gota de leite ativo → esconde o ponteiro nativo
+html.milk-cursor,
+html.milk-cursor * {
+  cursor: none !important;
+}
+
 html {
   scroll-behavior: auto; // Lenis cuida
   -webkit-font-smoothing: antialiased;
