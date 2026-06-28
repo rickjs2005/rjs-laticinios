@@ -15,6 +15,8 @@ $orange-soft: #ffe9d6;
 $pink: #ff8fa3;
 
 $cream: #fffbf2; // fundo principal
+$cream-2: #fbf4e6; // neutro quente (seções alternadas)
+$cream-3: #f5ecdb; // neutro quente mais fechado
 $ink: #21304a; // texto escuro (navy)
 $gray: #6b7689; // texto secundário
 $panda: #232a36; // preto do panda
@@ -22,8 +24,17 @@ $white: #ffffff;
 
 $line: #ede7d8;
 
+// ── Cor-mãe da marca (âncora 60-30-10) ──────────────────────────────
+//   azul = identidade; amarelo/verde/laranja = ACENTOS pontuais, nunca
+//   fundos chapados. Use as variantes -soft como base e a cor plena só
+//   em detalhes (ícone, 1 CTA, borda, dot).
+$brand: $blue;
+$brand-deep: $blue-deep;
+$brand-soft: $blue-soft;
+
 // tipografia
 $display: var(--font-display), "Fredoka", system-ui, sans-serif;
+$serif: var(--font-serif), "Fraunces", Georgia, serif; // editorial p/ títulos-herói
 $body: var(--font-body), "Nunito", system-ui, sans-serif;
 
 // formas e movimento

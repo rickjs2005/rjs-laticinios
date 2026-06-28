@@ -1,10 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { NAV, BRAND } from "@/constants/data";
+import { NAV, BRAND, waLink, CTA_COPY } from "@/constants/data";
 import { FlavorPicker } from "@/components/FlavorPicker/FlavorPicker";
 import styles from "./Navbar.module.scss";
+
+const QUOTE_WA = waLink("Olá! Gostaria de solicitar um orçamento RJS Laticínios.");
 
 function LogoMark() {
   return (
@@ -62,16 +64,22 @@ export function Navbar() {
 
         <div className={styles.right}>
           <FlavorPicker />
-          <a href="#contato" className={styles.cta}>
-            Solicitar Orçamento
+          <a
+            href={QUOTE_WA}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.cta}
+          >
+            {CTA_COPY.quote}
           </a>
         </div>
 
         <button
-          className={styles.burger}
+          className={`${styles.burger} ${open ? styles.burgerOpen : ""}`}
           onClick={() => setOpen((v) => !v)}
-          aria-label="Abrir menu"
+          aria-label={open ? "Fechar menu" : "Abrir menu"}
           aria-expanded={open}
+          aria-controls="mobile-menu"
         >
           <span />
           <span />
@@ -87,55 +95,96 @@ export function Navbar() {
 }
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  // ESC para fechar + focus-trap dentro do painel
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const focusables = () =>
+      Array.from(
+        panel.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])'
+        )
+      );
+
+    // foca o primeiro item ao abrir
+    focusables()[0]?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key === "Tab") {
+        const items = focusables();
+        if (items.length === 0) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: -10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -10 }}
-      style={{
-        position: "fixed",
-        inset: "70px 14px auto 14px",
-        background: "#fff",
-        borderRadius: 24,
-        padding: 18,
-        boxShadow: "0 30px 60px -30px rgba(33,48,74,0.5)",
-        display: "flex",
-        flexDirection: "column",
-        gap: 6,
-      }}
+      className={styles.backdrop}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      onClick={onClose}
     >
-      {NAV.map((l) => (
-        <a
-          key={l.href}
-          href={l.href}
-          onClick={onClose}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontWeight: 600,
-            fontSize: 20,
-            padding: "12px 10px",
-            borderRadius: 14,
-          }}
-        >
-          {l.label}
-        </a>
-      ))}
-      <a
-        href="#contato"
-        onClick={onClose}
-        style={{
-          marginTop: 8,
-          textAlign: "center",
-          background: "#2e7df6",
-          color: "#fff",
-          fontFamily: "var(--font-display)",
-          fontWeight: 600,
-          padding: "14px",
-          borderRadius: 999,
-        }}
+      <motion.div
+        id="mobile-menu"
+        ref={panelRef}
+        className={styles.panel}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Menu de navegação"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(e) => e.stopPropagation()}
       >
-        Solicitar Orçamento
-      </a>
+        {NAV.map((l, i) => (
+          <motion.a
+            key={l.href}
+            href={l.href}
+            onClick={onClose}
+            className={styles.panelLink}
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.06 + i * 0.05, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {l.label}
+          </motion.a>
+        ))}
+        <motion.a
+          href={QUOTE_WA}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={onClose}
+          className={styles.panelCta}
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.06 + NAV.length * 0.05, duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {CTA_COPY.quote}
+        </motion.a>
+      </motion.div>
     </motion.div>
   );
 }

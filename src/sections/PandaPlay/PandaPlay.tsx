@@ -1,46 +1,12 @@
 "use client";
 
-import { useEffect } from "react";
-import {
-  motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
-  useAnimationControls,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Reveal } from "@/components/anim/Reveal";
-import { AssetImage } from "@/components/media/AssetImage";
+import { InteractivePanda } from "@/components/panda/InteractivePanda";
 import styles from "./PandaPlay.module.scss";
 
 export function PandaPlay() {
   const reduce = useReducedMotion() ?? false;
-  const rx = useMotionValue(0);
-  const ry = useMotionValue(0);
-  const sx = useSpring(rx, { stiffness: 120, damping: 18 });
-  const sy = useSpring(ry, { stiffness: 120, damping: 18 });
-  const rotateY = useTransform(sx, (v) => v * 16);
-  const rotateX = useTransform(sy, (v) => v * -12);
-  const controls = useAnimationControls();
-
-  useEffect(() => {
-    if (reduce) return;
-    const onMove = (e: MouseEvent) => {
-      rx.set((e.clientX / window.innerWidth - 0.5) * 2);
-      ry.set((e.clientY / window.innerHeight - 0.5) * 2);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  }, [reduce, rx, ry]);
-
-  const playful = () => {
-    if (reduce) return;
-    controls.start({
-      rotate: [0, -6, 5, -3, 0],
-      scale: [1, 1.06, 0.97, 1.02, 1],
-      transition: { duration: 0.7, ease: "easeInOut" },
-    });
-  };
 
   return (
     <section className={`section ${styles.section}`}>
@@ -56,29 +22,33 @@ export function PandaPlay() {
           </Reveal>
           <Reveal delay={0.1}>
             <p>
-              Sou a carinha da RJS e adoro queijo. Passa o cursor pela tela que
-              eu giro pra te seguir, e <strong>clica em mim</strong> pra ver uma graça!
+              Sou a carinha da RJS e adoro queijo. Os meus olhos e a minha cabeça
+              te seguem pela tela — <strong>clica em mim</strong> pra ver uma graça!
             </p>
           </Reveal>
           <Reveal delay={0.15}>
-            <span className={styles.hint}>👆 Clique no panda</span>
+            <span className={styles.hint}>👆 Clique no panda (e tente 5x 😉)</span>
           </Reveal>
         </div>
 
         <div className={styles.pandaArea}>
+          {/* sombra de chão com follow-through (atraso = peso) */}
+          <motion.span
+            className={styles.shadow}
+            aria-hidden
+            animate={reduce ? undefined : { scaleX: [1, 0.9, 1] }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+          />
+
+          {/* bob leve — só anima dentro da viewport (poupa CPU/bateria) */}
           <motion.div
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            animate={controls}
-            onClick={playful}
+            className={styles.pandaFloat}
+            initial={{ y: 0 }}
+            whileInView={reduce ? undefined : { y: [0, -14, 0] }}
+            viewport={{ amount: 0.4 }}
+            transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
           >
-            <AssetImage
-              src="/hero/panda-cheese.png"
-              alt="Pandito oferecendo um queijo"
-              className={styles.pandaImg}
-              variant="free"
-              emoji="🐼"
-              label="render do Pandito (panda-cheese.png)"
-            />
+            <InteractivePanda item="cheese" className={styles.pandaSvg} />
           </motion.div>
         </div>
       </div>

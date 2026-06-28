@@ -68,3 +68,11 @@
   line-height: 1.02;
   letter-spacing: -0.01em;
 }
+
+// palavra-acento editorial (serifa soft) — cria contraste tipográfico
+@mixin accent-serif {
+  font-family: $serif;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}

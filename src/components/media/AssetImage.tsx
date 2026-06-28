@@ -18,7 +18,10 @@ export function AssetImage({
   variant = "free",
   emoji = "🖼️",
   label,
-  eager = true,
+  eager = false,
+  width,
+  height,
+  aspectRatio,
 }: {
   src: string;
   alt: string;
@@ -27,7 +30,13 @@ export function AssetImage({
   variant?: Variant;
   emoji?: string;
   label?: string;
+  /** carregamento ansioso — use só em imagens acima da dobra (LCP) */
   eager?: boolean;
+  /** dimensões intrínsecas — reservam espaço e evitam CLS */
+  width?: number;
+  height?: number;
+  /** alternativa a width/height quando só a proporção importa (ex.: "1 / 1") */
+  aspectRatio?: string;
 }) {
   const [failed, setFailed] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -38,11 +47,14 @@ export function AssetImage({
     if (el && el.complete && el.naturalWidth === 0) setFailed(true);
   }, []);
 
+  // reserva de espaço p/ não causar layout shift enquanto o PNG carrega
+  const boxStyle: CSSProperties = aspectRatio ? { aspectRatio, ...style } : { ...style };
+
   if (failed) {
     return (
       <div
         className={className}
-        style={style}
+        style={boxStyle}
         data-ph={variant}
         role="img"
         aria-label={alt}
@@ -60,8 +72,12 @@ export function AssetImage({
       src={src}
       alt={alt}
       className={className}
-      style={style}
+      style={boxStyle}
+      width={width}
+      height={height}
       loading={eager ? "eager" : "lazy"}
+      // @ts-expect-error — fetchPriority é válido no DOM, tipos do React podem não cobrir
+      fetchpriority={eager ? "high" : undefined}
       decoding="async"
       draggable={false}
       onError={() => setFailed(true)}

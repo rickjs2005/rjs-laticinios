@@ -20,6 +20,8 @@ type Props = {
   className?: string;
   style?: CSSProperties;
   title?: string;
+  /** cochilando: fecha os olhinhos */
+  sleepy?: boolean;
 };
 
 export function Panda({
@@ -29,9 +31,11 @@ export function Panda({
   className,
   style,
   title = "Mascote RJS",
+  sleepy = false,
 }: Props) {
-  const hx = look ? look.x * 6 : 0;
-  const hy = look ? look.y * 5 : 0;
+  // cabeça vira um pouco mais que os olhos = leitura clara do "te acompanho"
+  const hx = look ? look.x * 8 : 0;
+  const hy = look ? look.y * 6 : 0;
   const px = look ? look.x * 5 : 0;
   const py = look ? look.y * 4 : 0;
 
@@ -126,19 +130,28 @@ export function Panda({
         <circle cx="95" cy="160" r="17" fill="url(#cheekG)" />
         <circle cx="225" cy="160" r="17" fill="url(#cheekG)" />
 
-        {/* olhos — grandes e brilhantes */}
-        <circle cx="128" cy="134" r="18" fill="#fff" />
-        <circle cx="192" cy="134" r="18" fill="#fff" />
-        <g transform={`translate(${px} ${py})`}>
-          <circle cx="130" cy="136" r="11" fill="url(#eyeG)" />
-          <circle cx="190" cy="136" r="11" fill="url(#eyeG)" />
-          {/* catchlight grande */}
-          <circle cx="134" cy="131" r="4.2" fill="#fff" />
-          <circle cx="194" cy="131" r="4.2" fill="#fff" />
-          {/* reflexo inferior */}
-          <circle cx="126" cy="140" r="2" fill="#fff" opacity="0.7" />
-          <circle cx="186" cy="140" r="2" fill="#fff" opacity="0.7" />
-        </g>
+        {/* olhos — grandes e brilhantes (ou fechadinhos ao cochilar) */}
+        {sleepy ? (
+          <g stroke={BLACK} strokeWidth="4" strokeLinecap="round" fill="none">
+            <path d="M116 136 q12 9 24 0" />
+            <path d="M180 136 q12 9 24 0" />
+          </g>
+        ) : (
+          <>
+            <circle cx="128" cy="134" r="18" fill="#fff" />
+            <circle cx="192" cy="134" r="18" fill="#fff" />
+            <g transform={`translate(${px} ${py})`}>
+              <circle cx="130" cy="136" r="11" fill="url(#eyeG)" />
+              <circle cx="190" cy="136" r="11" fill="url(#eyeG)" />
+              {/* catchlight grande */}
+              <circle cx="134" cy="131" r="4.2" fill="#fff" />
+              <circle cx="194" cy="131" r="4.2" fill="#fff" />
+              {/* reflexo inferior */}
+              <circle cx="126" cy="140" r="2" fill="#fff" opacity="0.7" />
+              <circle cx="186" cy="140" r="2" fill="#fff" opacity="0.7" />
+            </g>
+          </>
+        )}
 
         {/* nariz glossy */}
         <ellipse cx="160" cy="162" rx="13" ry="9" fill={NOSE} />

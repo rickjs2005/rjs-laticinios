@@ -1,0 +1,104 @@
+@use "../../styles/tokens" as *;
+@use "../../styles/mixins" as *;
+
+.section {
+  padding-block: 56px;
+  background: $cream;
+  border-bottom: 1px solid $line;
+}
+
+.inner {
+  @include container;
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 22px;
+  background: $white;
+  border: 1px solid $line;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-sm;
+  transition: transform 0.4s $ease, box-shadow 0.4s $ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+    padding: 22px 16px;
+  }
+}
+
+.icon {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  color: $brand;
+  background: $brand-soft;
+}
+
+.text {
+  min-width: 0;
+
+  h3 {
+    @include h-display;
+    font-size: 1.02rem;
+    color: $ink;
+  }
+  p {
+    margin-top: 4px;
+    color: $gray;
+    font-weight: 600;
+    font-size: 0.84rem;
+    line-height: 1.35;
+  }
+}
+
+.credit {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  color: $gray;
+  font-family: $display;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.01em;
+}
+
+.dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: $green;
+  box-shadow: 0 0 0 4px $green-soft;
+}

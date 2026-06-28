@@ -53,10 +53,28 @@
   border: 1px solid rgba(255, 255, 255, 0.8);
   transition: transform 0.45s $bounce, box-shadow 0.45s $ease;
   cursor: pointer;
+  perspective: 1000px; /* contexto 3D p/ o tilt e o pop dos filhos */
   &:hover {
     transform: translateY(-14px);
     box-shadow: 0 44px 70px -30px rgba(33, 48, 74, 0.5);
   }
+  &:focus-visible {
+    outline: 3px solid var(--card-accent, var(--flavor));
+    outline-offset: 4px;
+  }
+}
+
+/* camada que inclina em 3D seguindo o cursor (rotateX/rotateY via framer) */
+.tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+/* render "flutua" para frente no hover (profundidade real) */
+.card:hover .stage {
+  transform: translateZ(36px);
+}
+.card:hover .body {
+  transform: translateZ(20px);
 }
 
 /* palco do render gigante */
@@ -67,6 +85,7 @@
   overflow: hidden;
   display: grid;
   place-items: center;
+  transition: transform 0.5s $ease;
   background:
     radial-gradient(80% 60% at 50% 30%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%),
     var(--card-soft, #f3f7ff);
@@ -167,6 +186,7 @@
 
 .body {
   padding: 22px 8px 0;
+  transition: transform 0.5s $ease;
   h3 {
     @include h-display;
     font-size: 1.5rem;
@@ -242,4 +262,197 @@
   .floatY {
     animation: none;
   }
+  /* sem profundidade/tilt em reduced-motion */
+  .card:hover .stage,
+  .card:hover .body {
+    transform: none;
+  }
+}
+
+/* ── Modal de ficha do produto ─────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(20, 28, 44, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  @include mobile {
+    padding: 14px;
+    align-items: flex-end;
+  }
+}
+
+.modal {
+  position: relative;
+  width: min(900px, 100%);
+  max-height: min(88vh, 760px);
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 8px;
+  background: linear-gradient(180deg, $white 0%, $cream 100%);
+  border-radius: $radius;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 50px 90px -30px rgba(33, 48, 74, 0.6);
+  @include tablet {
+    grid-template-columns: 1fr;
+    max-height: 90vh;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  color: $ink;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: $shadow-sm;
+  backdrop-filter: blur(4px);
+  transition: transform 0.3s $bounce, background 0.3s $ease;
+  &:hover {
+    transform: rotate(90deg) scale(1.06);
+    background: #fff;
+  }
+  &:focus-visible {
+    outline: 3px solid var(--card-accent, var(--flavor));
+    outline-offset: 3px;
+  }
+}
+
+.modalMedia {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 40px 28px;
+  border-radius: $radius 0 0 $radius;
+  background:
+    radial-gradient(75% 60% at 50% 38%, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0) 70%),
+    var(--card-soft, #f3f7ff);
+  @include tablet {
+    border-radius: $radius $radius 0 0;
+    padding: 36px 28px 24px;
+  }
+}
+
+.modalGlow {
+  position: absolute;
+  width: 66%;
+  height: 66%;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.55;
+  background: var(--card-accent, var(--flavor));
+}
+
+.modalRender {
+  position: relative;
+  z-index: 1;
+  width: 78%;
+  max-width: 320px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 26px 28px rgba(33, 48, 74, 0.34));
+  &[data-ph] {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border-radius: 24px;
+    border: 2px dashed rgba(33, 48, 74, 0.18);
+    background: rgba(255, 255, 255, 0.6);
+    color: var(--flavor-deep);
+    font-family: $display;
+    font-weight: 700;
+    span {
+      font-size: 3.2em;
+      line-height: 1;
+    }
+    small {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+  }
+}
+
+.modalInfo {
+  padding: 40px 38px 38px;
+  @include mobile {
+    padding: 26px 24px 28px;
+  }
+  h3 {
+    @include h-display;
+    font-size: 2rem;
+    margin-top: 12px;
+  }
+  > p {
+    margin-top: 16px;
+    color: $gray;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+}
+
+.modalCat {
+  @include pill(var(--card-soft, #f3f7ff), var(--flavor-deep, #{$ink}));
+}
+
+.modalWeight {
+  display: inline-block;
+  margin-top: 10px;
+  margin-left: 2px;
+  font-family: $display;
+  font-weight: 700;
+  color: $ink;
+}
+
+.tags {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  li {
+    font-family: $display;
+    font-weight: 600;
+    font-size: 12.5px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    color: $ink;
+    background: #fff;
+    border: 1px solid $line;
+    box-shadow: $shadow-sm;
+  }
+}
+
+.cta {
+  @include button(var(--card-accent, var(--flavor)), #fff);
+  margin-top: 26px;
+  width: 100%;
+  justify-content: center;
+  font-size: 17px;
+  &:focus-visible {
+    outline: 3px solid $ink;
+    outline-offset: 3px;
+  }
+}
+/* contraste de texto do CTA por acento claro */
+.yellow .cta {
+  color: $ink;
+}
+.blue .cta {
+  color: var(--flavor-ink);
 }

@@ -74,8 +74,14 @@ export function Footer() {
             ) : null}
           </form>
           {sent && <p className={styles.ok}>✓ Pronto! Em breve novidades fresquinhas.</p>}
-          <div className={styles.map} aria-label="Localização aproximada da fábrica">
-            <span className={styles.pin} />
+          <div className={styles.map}>
+            <iframe
+              src="https://maps.google.com/maps?q=Governador%20Valadares%20MG&z=12&output=embed"
+              title="Mapa — Governador Valadares, MG"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
             <span className={styles.tag}>📍 Governador Valadares, MG</span>
           </div>
         </div>

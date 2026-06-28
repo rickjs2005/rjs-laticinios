@@ -1,8 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Fredoka, Nunito } from "next/font/google";
+import { Fredoka, Nunito, Fraunces } from "next/font/google";
 import "./globals.scss";
 import { SmoothScroll } from "@/components/providers/SmoothScroll";
 import { ClickFX } from "@/components/anim/ClickFX";
+import { LiquidCursor } from "@/components/anim/LiquidCursor";
+import { StickyWhats } from "@/components/ui/StickyWhats";
 
 const display = Fredoka({
   subsets: ["latin"],
@@ -15,6 +17,15 @@ const body = Nunito({
   subsets: ["latin"],
   weight: ["400", "600", "700", "800"],
   variable: "--font-body",
+  display: "swap",
+});
+
+// serifa "soft" editorial — usada só em palavras-acento dos títulos (contraste)
+const serif = Fraunces({
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["italic", "normal"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -78,7 +89,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="pt-BR" className={`${display.variable} ${body.variable}`}>
+    <html lang="pt-BR" className={`${display.variable} ${body.variable} ${serif.variable}`}>
       <body>
         <script
           dangerouslySetInnerHTML={{
@@ -92,6 +103,8 @@ export default function RootLayout({
         />
         <SmoothScroll>{children}</SmoothScroll>
         <ClickFX />
+        <LiquidCursor />
+        <StickyWhats />
       </body>
     </html>
   );

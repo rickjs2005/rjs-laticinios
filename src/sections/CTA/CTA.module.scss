@@ -7,8 +7,14 @@
 .box {
   position: relative;
   overflow: hidden;
+  isolation: isolate;
   border-radius: 40px;
-  background: linear-gradient(120deg, $orange 0%, $yellow 100%);
+  // acento da marca sem exagero: base cremosa + brilho quente pontual
+  background:
+    radial-gradient(90% 130% at 12% 12%, rgba($orange, 0.18) 0%, transparent 46%),
+    radial-gradient(90% 120% at 92% 90%, rgba($yellow, 0.22) 0%, transparent 44%),
+    linear-gradient(135deg, $cream 0%, $cream-2 100%);
+  border: 1px solid color-mix(in srgb, $orange 22%, $line);
   padding: 64px 56px;
   display: grid;
   grid-template-columns: 1.2fr 0.8fr;
@@ -27,12 +33,11 @@
   h2 {
     @include h-display;
     font-size: clamp(2.2rem, 5.4vw, 4rem);
-    color: #fff;
-    text-shadow: 0 4px 0 rgba(33, 48, 74, 0.12);
+    color: $ink;
   }
   p {
     margin-top: 16px;
-    color: rgba(255, 255, 255, 0.95);
+    color: $gray;
     font-weight: 700;
     font-size: 1.15rem;
     max-width: 40ch;
@@ -40,11 +45,16 @@
       margin-inline: auto;
     }
   }
-  .btn {
-    margin-top: 28px;
-    @include button(#fff, $orange);
-    font-size: 17px;
-  }
+}
+// wrapper magnético do botão
+.magnetic {
+  display: inline-block;
+  margin-top: 28px;
+  will-change: transform;
+}
+.btn {
+  @include button($orange, #fff);
+  font-size: 17px;
 }
 .panda {
   position: relative;
@@ -66,9 +76,9 @@
     justify-content: center;
     gap: 8px;
     border-radius: 36px;
-    border: 3px dashed rgba(255, 255, 255, 0.9);
-    background: rgba(255, 255, 255, 0.18);
-    color: #fff;
+    border: 3px dashed rgba($orange, 0.6);
+    background: rgba($orange, 0.08);
+    color: $ink;
     font-family: $display;
     font-weight: 700;
     text-align: center;

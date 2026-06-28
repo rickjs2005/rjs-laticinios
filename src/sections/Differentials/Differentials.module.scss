@@ -17,16 +17,37 @@
   }
 }
 .card {
+  position: relative;
   background: #fff;
+  border: 1px solid $line;
   border-radius: $radius;
   padding: 32px 26px;
   box-shadow: $shadow-sm;
   text-align: center;
-  transition: transform 0.4s $bounce, box-shadow 0.4s $ease;
+  overflow: hidden;
+  transition: transform 0.4s $bounce, box-shadow 0.4s $ease, border-color 0.4s $ease;
+
+  // fio de acento no topo (cor restrita, aparece no hover)
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--accent, var(--flavor));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s $ease;
+  }
   &:hover {
     transform: translateY(-8px);
     box-shadow: $shadow;
+    border-color: color-mix(in srgb, var(--accent, var(--flavor)) 30%, $line);
   }
+  &:hover::before {
+    transform: scaleX(1);
+  }
+
+  // ícone: base clara (soft) + ícone no tom de acento — nada chapado
   .icon {
     width: 78px;
     height: 78px;
@@ -34,13 +55,18 @@
     display: grid;
     place-items: center;
     font-size: 36px;
-    color: #fff;
+    color: var(--accent, var(--flavor));
+    background: var(--accent-soft, $blue-soft);
     margin: 0 auto 20px;
-    box-shadow: $shadow-sm;
+    transition: transform 0.4s $bounce, box-shadow 0.4s $ease;
+  }
+  &:hover .icon {
+    box-shadow: 0 10px 24px -12px var(--accent, var(--flavor));
   }
   h3 {
     @include h-display;
     font-size: 1.3rem;
+    color: $ink;
   }
   p {
     margin-top: 10px;
@@ -48,8 +74,11 @@
     font-weight: 600;
     font-size: 0.95rem;
   }
-  &:nth-child(1) .icon { background: var(--flavor); }
-  &:nth-child(2) .icon { background: $green; }
-  &:nth-child(3) .icon { background: $orange; }
-  &:nth-child(4) .icon { background: $yellow; color: $ink; }
+
+  &:nth-child(1) { --accent: #{$blue}; --accent-soft: #{$blue-soft}; }
+  &:nth-child(2) { --accent: #{$green}; --accent-soft: #{$green-soft}; }
+  &:nth-child(3) { --accent: #{$orange}; --accent-soft: #{$orange-soft}; }
+  &:nth-child(4) { --accent: #{$yellow}; --accent-soft: #{$yellow-soft}; }
+  // amarelo precisa de um tom mais legível como ícone
+  &:nth-child(4) .icon { color: #b9870a; }
 }

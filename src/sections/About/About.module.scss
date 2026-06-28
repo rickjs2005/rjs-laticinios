@@ -11,23 +11,34 @@
 .timeline {
   margin-top: 60px;
   position: relative;
-  &::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    transform: translateX(-50%);
-    background: repeating-linear-gradient(
-      var(--flavor) 0 14px,
-      transparent 14px 26px
-    );
-    border-radius: 4px;
-    @include tablet {
-      left: 26px;
-    }
+}
+
+// trilho da jornada (linha vertical conectada) + linha que se "desenha"
+.rail {
+  position: absolute;
+  left: 50%;
+  top: 6px;
+  bottom: 6px;
+  width: 4px;
+  transform: translateX(-50%);
+  border-radius: 4px;
+  background: repeating-linear-gradient(
+    rgba($ink, 0.12) 0 14px,
+    transparent 14px 26px
+  );
+  overflow: hidden;
+  @include tablet {
+    left: 26px;
   }
+}
+.railFill {
+  position: absolute;
+  inset: 0;
+  transform-origin: top center;
+  transform: scaleY(0);
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--flavor) 0%, $green 55%, $orange 100%);
+  box-shadow: 0 0 18px -2px rgba($blue, 0.45);
 }
 
 .step {
@@ -58,6 +69,7 @@
 }
 
 .node {
+  position: relative;
   grid-column: 2;
   width: 70px;
   height: 70px;
@@ -79,12 +91,24 @@
   }
 }
 
+// halo que "acende" sob o nó ao entrar
+.pulse {
+  position: absolute;
+  inset: -8px;
+  border-radius: 999px;
+  background: radial-gradient(circle, currentColor 0%, transparent 68%);
+  opacity: 0.18;
+  z-index: -1;
+}
+
 .card {
+  position: relative;
   background: #fff;
   border-radius: $radius-sm;
   padding: 20px 24px;
   box-shadow: $shadow-sm;
   max-width: 360px;
+  border: 1px solid $line;
   @include tablet {
     max-width: none;
   }
@@ -104,16 +128,32 @@
   }
 }
 
+// numeração discreta da etapa (sofisticação editorial)
+.stepIndex {
+  font-family: $display;
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: var(--flavor);
+  opacity: 0.7;
+}
+
 // cores alternadas dos nós
 .step:nth-child(6n + 1) .node { color: var(--flavor-deep); border-color: var(--flavor-deep); }
 .step:nth-child(6n + 1) .card h3 { color: var(--flavor-deep); }
+.step:nth-child(6n + 1) .stepIndex { color: var(--flavor-deep); }
 .step:nth-child(6n + 2) .node { color: $green; border-color: $green; }
 .step:nth-child(6n + 2) .card h3 { color: $green; }
+.step:nth-child(6n + 2) .stepIndex { color: $green; }
 .step:nth-child(6n + 3) .node { color: $orange; border-color: $orange; }
 .step:nth-child(6n + 3) .card h3 { color: $orange; }
+.step:nth-child(6n + 3) .stepIndex { color: $orange; }
 .step:nth-child(6n + 4) .node { color: var(--flavor-deep); border-color: var(--flavor-deep); }
 .step:nth-child(6n + 4) .card h3 { color: var(--flavor-deep); }
+.step:nth-child(6n + 4) .stepIndex { color: var(--flavor-deep); }
 .step:nth-child(6n + 5) .node { color: #e6ad12; border-color: $yellow; }
 .step:nth-child(6n + 5) .card h3 { color: #e6ad12; }
+.step:nth-child(6n + 5) .stepIndex { color: #e6ad12; }
 .step:nth-child(6n + 6) .node { color: $green; border-color: $green; }
 .step:nth-child(6n + 6) .card h3 { color: $green; }
+.step:nth-child(6n + 6) .stepIndex { color: $green; }

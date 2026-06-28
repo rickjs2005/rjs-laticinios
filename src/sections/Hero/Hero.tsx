@@ -12,6 +12,7 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AssetImage } from "@/components/media/AssetImage";
+import FarmBackground from "@/components/decor/FarmBackground";
 import styles from "./Hero.module.scss";
 
 type FloatDef = {
@@ -24,27 +25,24 @@ type FloatDef = {
   depth: number;
   delay: number;
   splash?: string;
+  back?: boolean; // float de fundo (mais suave, parallax menor)
 };
 
-// Cada item = um render 3D transparente solto em /public/hero/.
+// Só assets que existem de verdade em /public/hero/ (sem placeholders quebrados).
+// "back" = profundidade: opacidade menor + blur leve + parallax reduzido.
 const FLOATS: FloatDef[] = [
-  { src: "/hero/milk.png", alt: "Copo de leite", emoji: "🥛", label: "leite", pos: { top: "2%", left: "0%" }, size: 150, depth: 40, delay: 0, splash: "/hero/splash-milk.png" },
-  { src: "/hero/yogurt.png", alt: "Iogurte", emoji: "🍦", label: "iogurte", pos: { top: "6%", right: "2%" }, size: 140, depth: 30, delay: 0.5, splash: "/hero/splash-yogurt.png" },
-  { src: "/hero/cheese.png", alt: "Queijo", emoji: "🧀", label: "queijo", pos: { top: "46%", left: "-4%" }, size: 130, depth: 34, delay: 0.9 },
-  { src: "/hero/butter.png", alt: "Manteiga", emoji: "🧈", label: "manteiga", pos: { top: "42%", right: "-3%" }, size: 124, depth: 24, delay: 0.3 },
-  { src: "/hero/strawberry.png", alt: "Morango", emoji: "🍓", label: "morango", pos: { bottom: "10%", left: "6%" }, size: 92, depth: 46, delay: 0.7 },
-  { src: "/hero/blueberry.png", alt: "Mirtilos", emoji: "🫐", label: "mirtilo", pos: { bottom: "4%", right: "10%" }, size: 78, depth: 52, delay: 1.1 },
-  { src: "/hero/leaf.png", alt: "Folha", emoji: "🍃", label: "folha", pos: { top: "24%", right: "20%" }, size: 64, depth: 60, delay: 0.2 },
+  { src: "/hero/milk.png", alt: "Copo de leite", emoji: "🥛", label: "leite", pos: { top: "4%", left: "1%" }, size: 150, depth: 42, delay: 0, splash: "/hero/splash-milk.png" },
+  { src: "/hero/yogurt.png", alt: "Iogurte", emoji: "🍦", label: "iogurte", pos: { top: "8%", right: "1%" }, size: 138, depth: 34, delay: 0.5, splash: "/hero/splash-yogurt.png" },
+  { src: "/hero/cheese.png", alt: "Queijo", emoji: "🧀", label: "queijo", pos: { bottom: "10%", left: "-2%" }, size: 120, depth: 20, delay: 0.9, back: true },
+  { src: "/hero/butter.png", alt: "Manteiga", emoji: "🧈", label: "manteiga", pos: { bottom: "5%", right: "-1%" }, size: 112, depth: 18, delay: 0.3, back: true },
 ];
 
-// posições fixas das partículas (determinístico — sem hydration mismatch)
+// posições fixas das partículas (determinístico — sem hydration mismatch).
+// Reduzidas a 6 e mais suaves p/ não competir com panda/CTA.
 const PARTICLES = [
-  { l: "8%", t: "20%", s: 7, d: 0 }, { l: "18%", t: "62%", s: 5, d: 1.4 },
-  { l: "30%", t: "30%", s: 9, d: 0.6 }, { l: "44%", t: "72%", s: 6, d: 2.1 },
-  { l: "56%", t: "18%", s: 8, d: 1.1 }, { l: "66%", t: "54%", s: 5, d: 0.3 },
-  { l: "74%", t: "28%", s: 10, d: 1.8 }, { l: "84%", t: "66%", s: 6, d: 0.9 },
-  { l: "92%", t: "38%", s: 7, d: 2.4 }, { l: "38%", t: "48%", s: 5, d: 1.6 },
-  { l: "12%", t: "44%", s: 6, d: 0.5 }, { l: "62%", t: "78%", s: 8, d: 2.0 },
+  { l: "10%", t: "22%", s: 6, d: 0 }, { l: "28%", t: "64%", s: 5, d: 1.4 },
+  { l: "52%", t: "16%", s: 7, d: 0.8 }, { l: "70%", t: "58%", s: 5, d: 2.1 },
+  { l: "84%", t: "30%", s: 6, d: 1.2 }, { l: "40%", t: "44%", s: 5, d: 1.7 },
 ];
 
 function FloatItem({
@@ -63,12 +61,12 @@ function FloatItem({
 
   return (
     <motion.div
-      className={styles.float}
+      className={`${styles.float} ${def.back ? styles.floatBack : ""}`}
       style={{ ...def.pos, width: def.size, x, y }}
     >
       <motion.div
         className={styles.floatInner}
-        animate={reduce ? undefined : { y: [0, -14, 0], rotate: [0, 4, -3, 0] }}
+        animate={reduce ? undefined : { y: [0, def.back ? -9 : -15, 0], rotate: [0, 4, -3, 0] }}
         transition={{ duration: 5 + def.delay, repeat: Infinity, ease: "easeInOut", delay: def.delay }}
       >
         {def.splash && (
@@ -81,9 +79,44 @@ function FloatItem({
           variant="chip"
           emoji={def.emoji}
           label={def.label}
+          eager
         />
       </motion.div>
     </motion.div>
+  );
+}
+
+// CTA primário com efeito MAGNÉTICO — atrai levemente o cursor (spring).
+function MagneticCta({ reduce }: { reduce: boolean }) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const mvx = useMotionValue(0);
+  const mvy = useMotionValue(0);
+  const x = useSpring(mvx, { stiffness: 220, damping: 16, mass: 0.4 });
+  const y = useSpring(mvy, { stiffness: 220, damping: 16, mass: 0.4 });
+
+  const onMove = (e: React.MouseEvent) => {
+    if (reduce || !ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    mvx.set((e.clientX - (r.left + r.width / 2)) * 0.4);
+    mvy.set((e.clientY - (r.top + r.height / 2)) * 0.4);
+  };
+  const reset = () => {
+    mvx.set(0);
+    mvy.set(0);
+  };
+
+  return (
+    <motion.span
+      ref={ref}
+      className={styles.magnetic}
+      style={reduce ? undefined : { x, y }}
+      onMouseMove={onMove}
+      onMouseLeave={reset}
+    >
+      <a href="#produtos" className={styles.primary}>
+        Conheça nossos produtos →
+      </a>
+    </motion.span>
   );
 }
 
@@ -97,7 +130,7 @@ export function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
   const bgRef = useRef<HTMLDivElement>(null);
 
-  // parallax do fundo no scroll (profundidade)
+  // parallax do fundo (cena de fazenda) no scroll (profundidade)
   useEffect(() => {
     if (reduce) return;
     const ctx = gsap.context(() => {
@@ -124,20 +157,16 @@ export function Hero() {
 
   return (
     <section id="top" ref={sectionRef} className={styles.hero} onMouseMove={onMove}>
-      {/* FUNDO — foto de fazenda (depth of field, luz dourada) */}
+      {/* FUNDO — cena de fazenda em camadas (céu, sol, nuvens, colinas, celeiro) */}
       <div ref={bgRef} className={styles.bg}>
-        <AssetImage
-          src="/hero/farm.jpg"
-          alt="Fazenda ao amanhecer"
-          className={styles.farmPhoto}
-          variant="photo"
-          emoji="🌄"
-          label="foto da fazenda (farm.jpg)"
-        />
+        <FarmBackground />
         <div className={styles.bgTint} />
       </div>
 
-      {/* partículas / brilhos */}
+      {/* scrim p/ contraste do texto (WCAG) — escurece o lado da copy */}
+      <div className={styles.scrim} aria-hidden />
+
+      {/* partículas / brilhos (suaves) */}
       <div className={styles.particles} aria-hidden>
         {PARTICLES.map((p, i) => (
           <span
@@ -165,9 +194,7 @@ export function Hero() {
             aquele sabor de comida de vó — entregues em todo o Brasil.
           </p>
           <div className={styles.actions}>
-            <a href="#produtos" className={styles.primary}>
-              Conheça nossos produtos →
-            </a>
+            <MagneticCta reduce={reduce} />
             <a href="#quem-somos" className={styles.ghost}>
               Nossa história
             </a>
@@ -203,6 +230,7 @@ export function Hero() {
                   variant="free"
                   emoji="🐼"
                   label="render do panda 3D (panda.png)"
+                  eager
                 />
               </motion.div>
             </motion.div>

@@ -16,14 +16,15 @@
   }
 }
 .card {
-  background: #fff;
+  background: linear-gradient(180deg, #fff 0%, #fbf7ee 100%);
   border-radius: $radius;
   overflow: hidden;
   box-shadow: $shadow-sm;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   transition: transform 0.4s $bounce, box-shadow 0.4s $ease;
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: $shadow;
+    transform: translateY(-12px);
+    box-shadow: 0 44px 70px -30px rgba(33, 48, 74, 0.5);
   }
   .media {
     position: relative;
@@ -43,7 +44,7 @@
     }
   }
   &:hover .media img {
-    transform: scale(1.05);
+    transform: scale(1.06);
   }
   .body {
     padding: 22px 24px 26px;
@@ -51,19 +52,21 @@
       @include h-display;
       font-size: 1.35rem;
     }
-    ul {
+    .chips {
       margin-top: 14px;
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-    }
-    li {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--flavor-deep);
-      background: var(--flavor-soft);
-      padding: 5px 11px;
-      border-radius: 999px;
+      list-style: none;
+      padding: 0;
+      li {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: var(--flavor-deep);
+        background: var(--flavor-soft);
+        padding: 5px 11px;
+        border-radius: 999px;
+      }
     }
     .btn {
       margin-top: 20px;
@@ -71,6 +74,197 @@
       font-size: 15px;
       width: 100%;
       justify-content: center;
+      &:focus-visible {
+        outline: 3px solid $ink;
+        outline-offset: 3px;
+      }
     }
+  }
+}
+
+/* ── Modal da receita ──────────────────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(20, 28, 44, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  @include mobile {
+    padding: 14px;
+    align-items: flex-end;
+  }
+}
+
+.modal {
+  position: relative;
+  width: min(920px, 100%);
+  max-height: min(88vh, 780px);
+  overflow: auto;
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  background: linear-gradient(180deg, $white 0%, $cream 100%);
+  border-radius: $radius;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 50px 90px -30px rgba(33, 48, 74, 0.6);
+  @include tablet {
+    grid-template-columns: 1fr;
+    max-height: 90vh;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 4;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  color: $ink;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: $shadow-sm;
+  backdrop-filter: blur(4px);
+  transition: transform 0.3s $bounce, background 0.3s $ease;
+  &:hover {
+    transform: rotate(90deg) scale(1.06);
+    background: #fff;
+  }
+  &:focus-visible {
+    outline: 3px solid $green;
+    outline-offset: 3px;
+  }
+}
+
+.modalMedia {
+  position: relative;
+  min-height: 280px;
+  border-radius: $radius 0 0 $radius;
+  overflow: hidden;
+  img {
+    object-fit: cover;
+  }
+  @include tablet {
+    border-radius: $radius $radius 0 0;
+    min-height: 240px;
+  }
+}
+
+.modalInfo {
+  padding: 38px 38px 36px;
+  @include mobile {
+    padding: 26px 22px 28px;
+  }
+  h3 {
+    @include h-display;
+    font-size: 2rem;
+    padding-right: 44px;
+  }
+}
+
+.meta {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: $display;
+  font-weight: 600;
+  font-size: 13px;
+  color: $ink;
+  background: #fff;
+  border: 1px solid $line;
+  padding: 8px 14px;
+  border-radius: 999px;
+  box-shadow: $shadow-sm;
+  svg {
+    color: $green;
+    font-size: 15px;
+  }
+}
+
+.blockTitle {
+  @include h-display;
+  font-size: 1.15rem;
+  margin-top: 26px;
+  em {
+    @include accent-serif;
+    color: $green;
+  }
+}
+
+.ingredients {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  li {
+    font-family: $display;
+    font-weight: 600;
+    font-size: 12.5px;
+    padding: 7px 13px;
+    border-radius: 999px;
+    color: $ink;
+    background: $green-soft;
+  }
+}
+
+.steps {
+  margin-top: 16px;
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  counter-reset: step;
+  li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    p {
+      margin-top: 3px;
+      color: $gray;
+      font-weight: 600;
+      line-height: 1.55;
+      font-size: 0.95rem;
+    }
+  }
+}
+.stepNum {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  display: grid;
+  place-items: center;
+  font-family: $display;
+  font-weight: 700;
+  font-size: 15px;
+  color: #fff;
+  background: $green;
+  box-shadow: $shadow-sm;
+}
+
+.cta {
+  @include button($green, #fff);
+  margin-top: 30px;
+  width: 100%;
+  justify-content: center;
+  font-size: 16px;
+  &:focus-visible {
+    outline: 3px solid $ink;
+    outline-offset: 3px;
   }
 }

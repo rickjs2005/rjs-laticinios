@@ -18,7 +18,7 @@
     font-size: clamp(2rem, 5vw, 3.4rem);
     color: $ink;
     em {
-      font-style: normal;
+      @include accent-serif; // serifa soft itálica = contraste tipográfico
     }
   }
   p {

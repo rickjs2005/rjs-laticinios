@@ -101,12 +101,96 @@
     display: inline-flex;
   }
   flex-direction: column;
+  justify-content: center;
   gap: 5px;
   padding: 8px;
+  position: relative;
+  z-index: 210;
+
   span {
+    display: block;
     width: 26px;
     height: 3px;
     border-radius: 3px;
     background: $ink;
+    transition: transform 0.3s $ease, opacity 0.2s $ease;
+  }
+
+  // burger → X
+  &.burgerOpen span {
+    &:nth-child(1) {
+      transform: translateY(8px) rotate(45deg);
+    }
+    &:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    &:nth-child(3) {
+      transform: translateY(-8px) rotate(-45deg);
+    }
+  }
+}
+
+// ── Menu mobile (backdrop + painel) ────────────────────────────────
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(33, 48, 74, 0.5);
+  backdrop-filter: blur(2px);
+}
+
+.panel {
+  position: fixed;
+  inset: 70px 14px auto 14px;
+  background: $white;
+  border-radius: $radius;
+  padding: 18px;
+  box-shadow: 0 30px 60px -30px rgba(33, 48, 74, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.panelLink {
+  font-family: $display;
+  font-weight: 600;
+  font-size: 20px;
+  color: $ink;
+  padding: 12px 14px;
+  border-radius: $radius-sm;
+  transition: background 0.2s $ease, color 0.2s $ease;
+
+  &:hover {
+    background: var(--flavor-soft);
+    color: var(--flavor-deep);
+  }
+}
+
+.panelCta {
+  @include button(var(--flavor), var(--flavor-ink));
+  margin-top: 8px;
+  justify-content: center;
+  text-align: center;
+}
+
+// foco visível acessível
+.links a,
+.cta,
+.burger,
+.panelLink,
+.panelCta,
+.logo {
+  &:focus-visible {
+    outline: 3px solid var(--flavor);
+    outline-offset: 3px;
+    border-radius: $radius-sm;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burger span,
+  .panelLink {
+    transition: none;
   }
 }
