@@ -67,6 +67,12 @@
   height: auto;
   display: block;
   filter: drop-shadow(0 28px 34px rgba(33, 48, 74, 0.3));
+  // mascote vetorial (SVG) unificado
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
   &[data-ph] {
     aspect-ratio: 3 / 4;
     width: min(320px, 80%);

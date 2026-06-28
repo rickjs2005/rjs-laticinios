@@ -211,6 +211,12 @@
   height: auto;
   display: block;
   filter: drop-shadow(0 44px 54px rgba(20, 38, 70, 0.4));
+  // mascote vetorial (SVG) ocupa toda a largura do palco
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
   &[data-ph] {
     aspect-ratio: 3 / 4;
     max-height: 540px;

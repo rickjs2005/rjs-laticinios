@@ -4,24 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { NAV, BRAND, waLink, CTA_COPY } from "@/constants/data";
 import { FlavorPicker } from "@/components/FlavorPicker/FlavorPicker";
+import { PandaLogo } from "@/components/panda/PandaLogo";
 import styles from "./Navbar.module.scss";
 
 const QUOTE_WA = waLink("Olá! Gostaria de solicitar um orçamento RJS Laticínios.");
-
-function LogoMark() {
-  return (
-    <svg viewBox="0 0 48 48" aria-hidden xmlns="http://www.w3.org/2000/svg">
-      <circle cx="24" cy="26" r="18" fill="#fff" stroke="#232a36" strokeWidth="2" />
-      <circle cx="11" cy="11" r="7" fill="#232a36" />
-      <circle cx="37" cy="11" r="7" fill="#232a36" />
-      <ellipse cx="18" cy="25" rx="5" ry="6" fill="#232a36" />
-      <ellipse cx="30" cy="25" rx="5" ry="6" fill="#232a36" />
-      <circle cx="18" cy="26" r="2" fill="#fff" />
-      <circle cx="30" cy="26" r="2" fill="#fff" />
-      <ellipse cx="24" cy="32" rx="3" ry="2" fill="#3a4150" />
-    </svg>
-  );
-}
 
 export function Navbar() {
   const [solid, setSolid] = useState(false);
@@ -50,7 +36,7 @@ export function Navbar() {
     >
       <div className={styles.inner}>
         <a href="#top" className={styles.logo} aria-label={`${BRAND.name} — início`}>
-          <LogoMark />
+          <PandaLogo title={BRAND.name} />
           RJS <b>Laticínios</b>
         </a>
 

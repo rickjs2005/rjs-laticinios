@@ -12,6 +12,7 @@ import {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AssetImage } from "@/components/media/AssetImage";
+import { InteractivePanda } from "@/components/panda/InteractivePanda";
 import FarmBackground from "@/components/decor/FarmBackground";
 import styles from "./Hero.module.scss";
 
@@ -227,17 +228,8 @@ export function Hero() {
                 animate={reduce ? undefined : { y: [0, -16, 0] }}
                 transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
               >
-                <AssetImage
-                  src="/hero/panda.png"
-                  alt="Mascote panda RJS"
-                  className={styles.pandaImg}
-                  variant="free"
-                  emoji="🐼"
-                  label="render do panda 3D (panda.png)"
-                  width={432}
-                  height={578}
-                  eager
-                />
+                {/* mascote vetorial unificado — olhos/cabeça seguem o cursor */}
+                <InteractivePanda item="none" className={styles.pandaImg} />
               </motion.div>
             </motion.div>
           </motion.div>

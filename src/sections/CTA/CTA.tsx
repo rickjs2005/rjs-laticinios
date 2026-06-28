@@ -7,7 +7,7 @@ import {
   useSpring,
   useReducedMotion,
 } from "framer-motion";
-import { AssetImage } from "@/components/media/AssetImage";
+import { InteractivePanda } from "@/components/panda/InteractivePanda";
 import { Confetti } from "@/components/anim/Confetti";
 import { Reveal } from "@/components/anim/Reveal";
 import { waLink, CTA_COPY } from "@/constants/data";
@@ -78,16 +78,8 @@ export function CTA() {
           transition={{ duration: 0.7, ease: [0.34, 1.56, 0.64, 1] }}
         >
           <motion.div animate={reduce ? undefined : { y: [0, -12, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
-            <AssetImage
-              src="/hero/panda-sign.png"
-              alt="Panda RJS segurando uma placa: Vamos crescer juntos?"
-              className={styles.pandaImg}
-              variant="free"
-              emoji="🐼"
-              label="render do panda com placa (panda-sign.png)"
-              width={432}
-              height={578}
-            />
+            {/* mascote vetorial unificado segurando a placa */}
+            <InteractivePanda item="sign" className={styles.pandaImg} />
           </motion.div>
         </motion.div>
       </div>
