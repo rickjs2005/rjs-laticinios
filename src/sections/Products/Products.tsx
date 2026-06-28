@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import {
   AnimatePresence,
   motion,
@@ -14,6 +15,20 @@ import { PRODUCTS, CATEGORIES, waLink, type Product } from "@/constants/data";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { AssetImage } from "@/components/media/AssetImage";
 import styles from "./Products.module.scss";
+
+// O 3D (three.js) só entra quando uma ficha abre — fora do bundle inicial.
+const Product3D = dynamic(
+  () => import("@/components/three/Product3D").then((m) => m.Product3D),
+  { ssr: false, loading: () => <div className={styles.canvasLoading}><span /></div> },
+);
+
+// cor de acento (hex) por produto p/ os materiais 3D (tampas/rótulos)
+const ACCENT_HEX: Record<Product["color"], string> = {
+  blue: "#2e7df6",
+  yellow: "#ffc828",
+  green: "#3fbf6a",
+  orange: "#ff8a3d",
+};
 
 const EMOJI: Record<string, string> = {
   "leite-integral": "🥛",
@@ -202,16 +217,10 @@ function ProductModal({ product, onClose }: { product: Product; onClose: () => v
 
         <div className={styles.modalMedia}>
           <span className={styles.modalGlow} aria-hidden />
-          <AssetImage
-            src={`/products/${product.id}.png`}
-            alt={product.name}
-            className={styles.modalRender}
-            variant="chip"
-            emoji={EMOJI[product.id] ?? "🧺"}
-            label="render"
-            width={DIMS[product.id]?.w}
-            height={DIMS[product.id]?.h}
-          />
+          <Product3D kind={product.id} accent={ACCENT_HEX[product.color]} />
+          <span className={styles.view3d} aria-hidden>
+            ↻ arraste para girar
+          </span>
         </div>
 
         <div className={styles.modalInfo}>

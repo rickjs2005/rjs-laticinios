@@ -364,6 +364,46 @@
   background: var(--card-accent, var(--flavor));
 }
 
+/* dica de interação do visualizador 3D */
+.view3d {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  @include pill(rgba(255, 255, 255, 0.9), $ink);
+  font-size: 12px;
+  box-shadow: $shadow-sm;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+}
+
+/* spinner enquanto o chunk do three.js carrega */
+.canvasLoading {
+  width: 100%;
+  height: clamp(260px, 42vh, 380px);
+  display: grid;
+  place-items: center;
+  span {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 4px solid var(--card-accent, var(--flavor));
+    border-top-color: transparent;
+    animation: spin3d 0.8s linear infinite;
+  }
+}
+@keyframes spin3d {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .canvasLoading span {
+    animation: none;
+  }
+}
+
 .modalRender {
   position: relative;
   z-index: 1;

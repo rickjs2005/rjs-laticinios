@@ -1,0 +1,14 @@
+.canvas {
+  width: 100%;
+  height: clamp(260px, 42vh, 380px);
+  cursor: grab;
+  touch-action: pan-y; // permite rolar a página no mobile; o drag gira
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  canvas {
+    outline: none;
+  }
+}
