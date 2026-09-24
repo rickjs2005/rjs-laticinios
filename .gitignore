@@ -9,3 +9,14 @@ npm-debug.log*
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# env files (o exemplo sem segredos pode ir para o repo)
+.env*
+!.env.example
+
+# estado local de agentes (nao versionar)
+.claude/project-state.md
+.claude/launch.json
+.claude/settings*.json
+.claude/worktrees/
+.superpowers/
